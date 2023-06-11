@@ -1,40 +1,97 @@
-# Day 09 – Java bootcamp
-### Sockets
+# Java Chat Application
 
-*Takeaways: Today you will implement the basic mechanism of a client/server application based on Java—Sockets API*
+# Содержание
+1. [Описание проекта](#описание-проекта)
+2. [Структура проекта](#структура-проекта)
+    2.1. [Структура сервера](#структура-сервера)
+    2.2. [Структура клиента](#структура-клиента)
+3. [Подключение базы данных](#chapter-iv) 
+4. [Сборка](#chapter-ii) 
+    4.1. [Сборка сервера](#general-rules)
+    4.2. [Сборка клиента](#general-rules)
+5. [Запуск](#chapter-iii) 
+    5.1. [Запуск сервера](#exercise-00-registration)
+    5.2. [Запуск клиента](#exercise-00-registration)
+6. [Описание кода](#chapter-v) 
 
 
-# Contents
-1. [Chapter I](#chapter-i) \
-    1.1. [Preamble](#preamble)
-2. [Chapter II](#chapter-ii) \
-    2.1. [General Rules](#general-rules)
-3. [Chapter III](#chapter-iii) \
-    3.1. [Exercise 00 – Registration](#exercise-00-registration)
-4. [Chapter IV](#chapter-iv) \
-    4.1. [Exercise 01 – Messaging](#exercise-01-messaging)
-5. [Chapter V](#chapter-v) \
-    5.1. [Exercise 02 – Rooms](#exercise-02-rooms)
+# Описание проекта
+Это репозиторий, содержащий исходный код многопользовательского чат-приложения на Java. Приложение реализовано с использованием Java Sockets API и включает клиентскую и серверную части. Оно позволяет пользователям регистрироваться, входить в систему, обмениваться сообщениями и взаимодействовать в чат-комнатах.
 
-# Chapter I
-### Preamble
-The client/server interaction is the backbone of up-to-date systems. Server performs a large volume of business logic and information storage. As a result, the client application load is significantly reduced.
+# Структура проекта
+### Структура сервера
+Сервер состоит из следующих основных блоков 
+- server - содержит саму логику работы с сокетами. Создание отдельных потоков на каждое подключение клиентов.
+- services - содержит логику 
+- repositories
+- models
 
-Dividing the logic into server and client components enables to flexibly build a general system architecture if server and client implementations are maximally independent.
 
-Client and server communicate via numerous protocols described in OSI network model as different layers:
+<details>
+<summary>Нажмите, чтобы развернуть/свернуть</summary>
+- docker-compose.yml
+- pom.xml
+- src
+  - main
+    - java
+      - edu
+        - school21
+          - sockets
+            - app
+              - Main.java
+            - config
+              - SocketsApplicationConfig.java
+            - exceptions
+              - CommandNotFoundExceptions.java
+              - RoomsNotFoundExceptions.java
+            - models
+              - ChatRoom.java
+              - Message.java
+              - User.java
+            - repositories
+              - CrudRepository.java
+              - messagesrepository
+                - MessagesRepository.java
+                - MessagesRepositoryJdbcTemplateImpl.java
+              - roomsrepository
+                - RoomsRepository.java
+                - RoomsRepositoryJdbcTemplateImpl.java
+              - usersrepository
+                - UsersRepository.java
+                - UsersRepositoryJdbcTemplateImpl.java
+              - utils
+                - TableInitializer.java
+            - server
+              - ClientConnection.java
+              - Server.java
+              - commands
+                - LoginСommand.java
+                - ManipulateRoomsCommand.java
+              - invokers
+                - LoginCommandSwitch.java
+                - ManipulateRoomsCommandSwitch.java
+              - receivers
+                - LoginReceiver.java
+                - ManipulateRoomsReceiver.java
+            - services
+              - messageservice
+                - MessagesService.java
+                - MessagesServiceImpl.java
+              - roomservice
+                - RoomsService.java
+                - RoomsServiceImpl.java
+              - userservice
+                - UsersService.java
+                - UsersServiceImpl.java
+    - resources
+      - data.sql
+      - db.properties
+      - schema.sql
+</details>
+### Структура клиента
 
-Layer |	Example
----|---
-7.<font> Application |	HTTP
-6.<font> Representation |	ASCII
-5.<font> Session |	RPC
-4.<font> Transport |	TCP, UDP
-3.<font> Network |	IPv4
-2.<font> Channel |	Ethernet, DSL
-1.<font> Physical |	USB, "twisted pair"
 
-![A Joke](misc/images/joke.png)
+
 
 # Chapter II
 ### General Rules
