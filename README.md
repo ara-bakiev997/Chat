@@ -5,7 +5,7 @@
 2. [Структура проекта](#структура-проекта) \
     2.1. [Структура сервера](#структура-сервера) \
     2.2. [Структура клиента](#структура-клиента) 
-3. [Подключение базы данных](#chapter-iv)  
+3. [Подключение базы данных](#подключение-базы-данных)  
 4. [Сборка](#chapter-ii) \
     4.1. [Сборка сервера](#general-rules) \
     4.2. [Сборка клиента](#general-rules) 
@@ -43,9 +43,9 @@
 
 
 <details>
-<summary>Нажмите, чтобы увидеть полную структуру сервера</summary>
+<summary>Структура сервера</summary>
 
-```
+```yaml
 ├── docker-compose.yml
 ├── pom.xml
 └── src
@@ -106,7 +106,6 @@
             └── schema.sql
 
 ```
-
 </details>
 
 ### Структура клиента
@@ -118,9 +117,9 @@
 - `Writer` отвечает за запись данных в сокет. Он также работает в отдельном потоке и обрабатывает очередь исходящих сообщений. `Writer` получает команды от клиента и отправляет их на сервер для выполнения.
 
 <details>
-<summary>Нажмите, чтобы увидеть полную структуру клиента</summary>
+<summary>Структура клиента</summary>
 
-```
+```yaml
 ├── pom.xml
 └── src
     └── main
@@ -135,30 +134,40 @@
                             ├── Reader.java
                             └── Writer.java 
 ```
-
 </details>
 
+# Подключение базы данных
 
+В данном проекте используется PostgreSQL в связке с pgAdmin для администрирования базы данных. Для удобства развертывания и управления, вся инфраструктура базы данных запускается с помощью Docker Compose.
 
-# Chapter II
-### General Rules
-- Use this page as the only reference. Do not listen to any rumors and speculations about how to prepare your solution.
-- Now there is only one Java version for you, 1.8. Make sure that compiler and interpreter of this version are installed on your machine.
-- You can use IDE to write and debug the source code.
-- The code is read more often than written. Read carefully the [document](https://www.oracle.com/technetwork/java/codeconventions-150003.pdf) where code formatting rules are given. When performing each task, make sure you follow the generally accepted [Oracle standards](https://www.oracle.com/java/technologies/javase/codeconventions-namingconventions.html).
+Docker Compose позволяет определить и описать контейнеры, их конфигурацию и зависимости в файле docker-compose.yml. В данном файле определены контейнеры для PostgreSQL и pgAdmin, а также настройки для каждого контейнера, включая порты, переменные окружения и другие параметры.
 
-- Comments are not allowed in the source code of your solution. They make it difficult to read the code.
-- Pay attention to the permissions of your files and directories.
-- To be assessed, your solution must be in your GIT repository.
-- Your solutions will be evaluated by your bootcamp mates.
-- You should not leave in your "src" directory any other file than those explicitly specified by the exercise instructions. It is recommended that you modify your .gitignore to avoid accidents.
-- When you need to get precise output in your programs, it is forbidden to display a precalculated output instead of performing the exercise correctly.
-- Have a question? Ask your neighbor on the right. Otherwise, try with your neighbor on the left.
-- Your reference manual: mates / Internet / Google. And one more thing. There's an answer to any question you may have on Stackoverflow. Learn how to ask questions correctly.
-- Read the examples carefully. They may require things that are not otherwise specified in the subject.
-- Use System.out for output.
-- And may the Force be with you!
-- Never leave that till tomorrow which you can do today ;)
+<details>
+<summary>Файл docker-compose.yml</summary>
+
+```yaml
+version: '3.1'
+
+services:
+
+   db:
+      image: postgres
+      environment:
+         POSTGRES_PASSWORD: admin
+         POSTGRES_DB: database
+      ports:
+      - 5432:5432
+
+   adminer:
+      image: dpage/pgadmin4
+      environment:
+         PGADMIN_DEFAULT_EMAIL: user@domain.com
+         PGADMIN_DEFAULT_PASSWORD: admin
+      ports:
+      - 80:80
+```
+
+</details>
 
 # Chapter III
 ### Exercise 00 – Registration
