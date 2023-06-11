@@ -20,6 +20,7 @@
 	</properties>
 
 	<build>
+		<finalName>socket-client</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -33,7 +34,6 @@
 						</manifest>
 					</archive>
 				</configuration>
-
 			</plugin>
 		</plugins>
 	</build>
