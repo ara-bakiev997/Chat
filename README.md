@@ -1,31 +1,31 @@
 # Java Chat Application
 
 # Содержание
-1. [Описание проекта](#описание-проекта) \
+1. [Описание проекта](#описание-проекта) 
 2. [Структура проекта](#структура-проекта) \
     2.1. [Структура сервера](#структура-сервера) \
-    2.2. [Структура клиента](#структура-клиента) \
-3. [Подключение базы данных](#chapter-iv) \
+    2.2. [Структура клиента](#структура-клиента) 
+3. [Подключение базы данных](#chapter-iv)  
 4. [Сборка](#chapter-ii) \
     4.1. [Сборка сервера](#general-rules) \
-    4.2. [Сборка клиента](#general-rules) \
+    4.2. [Сборка клиента](#general-rules) 
 5. [Запуск](#chapter-iii) \
     5.1. [Запуск сервера](#exercise-00-registration) \
-    5.2. [Запуск клиента](#exercise-00-registration) \
-6. [Описание кода](#chapter-v) \
+    5.2. [Запуск клиента](#exercise-00-registration) 
+6. [Описание кода](#chapter-v) 
 
 
 # Описание проекта
-Это репозиторий, содержащий исходный код многопользовательского чат-приложения на Java. Приложение реализовано с использованием Java Sockets API и включает клиентскую и серверную части. Оно позволяет пользователям регистрироваться, входить в систему, обмениваться сообщениями и взаимодействовать в чат-комнатах.
+Этот репозиторий, содержащий исходный код многопользовательского чат-приложения на Java. Приложение реализовано с использованием Java Sockets API и включает клиентскую и серверную части. Оно позволяет пользователям регистрироваться, входить в систему, обмениваться сообщениями и взаимодействовать в чат-комнатах.
 
 # Структура проекта
 ### Структура сервера
 
-##### Класс `Server` является основным компонентом серверной части приложения. 
-- Он отвечает за обработку каждого подключения клиента в отдельном потоке. Когда клиент подключается, сервер принимает соединение и создает экземпляр класса `ClientConnection` для обработки данного подключения.
-- Класс `ClientConnection` реализововывает логику обработки команд от клиента. Он получает сообщения от клиента через соединение, а затем выполняет соответствующие действия в зависимости от полученной команды.
+##### Для реализации многопользовательского приложения все соединения должны обрабатываться в отдельных потоках. 
+- Класс `Server` отвечает за обработку каждого подключения клиента в отдельном потоке. Когда клиент подключается, сервер принимает соединение и создает экземпляр класса `ClientConnection` для обработки данного подключения.
+- Класс `ClientConnection` реализовывает логику обработки команд от клиента. Он получает сообщения от клиента через соединение, а затем выполняет соответствующие действия в зависимости от полученной команды.
 
-##### Для удобной обработки команд клиента реализован паттерн `command` который состоит из следующих блоков:
+##### Для удобной обработки команд клиента реализован паттерн `command` который состоит из следующих блоков.
 - Команды (commands): В этом блоке находятся интерфейсы, представляющие отдельные команды, которые клиент может отправить на сервер. В нашем случае, это `LoginCommand` и `ManipulateRoomsCommand`.
 
 - Исполнители команд (invokers): В этом блоке находятся классы которые cодержат логику выбора и вызова соответствующей команды.
@@ -39,76 +39,104 @@
 
 - Компоненты `config` и `resources` предназначены для конфигурации приложения и управление ресурсами. Включает классы, такие как SocketsApplicationConfig, которые содержат настройки и зависимости приложения, а также файлы ресурсов, такие как db.properties, содержащие настройки подключения к базе данных.
 
-Каждый блок выполняет свою роль в общей структуре сервера и отвечает за определенные аспекты функционирования приложения.Это позволяет разделить ответственности и облегчает сопровождение и расширение кодовой базы сервера.
+Каждый блок выполняет свою роль в общей структуре сервера и отвечает за определенные аспекты функционирования приложения. Это позволяет разделить ответственности и облегчает сопровождение и расширение кодовой базы сервера.
 
 
 <details>
 <summary>Нажмите, чтобы увидеть полную структуру сервера</summary>
 
 ```
-- docker-compose.yml
-- pom.xml
-- src
-  - main
-    - java
-      - edu
-        - school21
-          - sockets
-            - app
-              - Main.java
-            - config
-              - SocketsApplicationConfig.java
-            - exceptions
-              - CommandNotFoundExceptions.java
-              - RoomsNotFoundExceptions.java
-            - models
-              - ChatRoom.java
-              - Message.java
-              - User.java
-            - repositories
-              - CrudRepository.java
-              - messagesrepository
-                - MessagesRepository.java
-                - MessagesRepositoryJdbcTemplateImpl.java
-              - roomsrepository
-                - RoomsRepository.java
-                - RoomsRepositoryJdbcTemplateImpl.java
-              - usersrepository
-                - UsersRepository.java
-                - UsersRepositoryJdbcTemplateImpl.java
-              - utils
-                - TableInitializer.java
-            - server
-              - ClientConnection.java
-              - Server.java
-              - commands
-                - LoginСommand.java
-                - ManipulateRoomsCommand.java
-              - invokers
-                - LoginCommandSwitch.java
-                - ManipulateRoomsCommandSwitch.java
-              - receivers
-                - LoginReceiver.java
-                - ManipulateRoomsReceiver.java
-            - services
-              - messageservice
-                - MessagesService.java
-                - MessagesServiceImpl.java
-              - roomservice
-                - RoomsService.java
-                - RoomsServiceImpl.java
-              - userservice
-                - UsersService.java
-                - UsersServiceImpl.java
-    - resources
-      - data.sql
-      - db.properties
-      - schema.sql
+├── docker-compose.yml
+├── pom.xml
+└── src
+    └── main
+        ├── java
+        │   └── edu
+        │       └── school21
+        │           └── sockets
+        │               ├── app
+        │               │   └── Main.java
+        │               ├── config
+        │               │   └── SocketsApplicationConfig.java
+        │               ├── exceptions
+        │               │   ├── CommandNotFoundExceptions.java
+        │               │   └── RoomsNotFoundExceptions.java
+        │               ├── models
+        │               │   ├── ChatRoom.java
+        │               │   ├── Message.java
+        │               │   └── User.java
+        │               ├── repositories
+        │               │   ├── CrudRepository.java
+        │               │   ├── messagesrepository
+        │               │   │   ├── MessagesRepository.java
+        │               │   │   └── MessagesRepositoryJdbcTemplateImpl.java
+        │               │   ├── roomsrepository
+        │               │   │   ├── RoomsRepository.java
+        │               │   │   └── RoomsRepositoryJdbcTemplateImpl.java
+        │               │   ├── usersrepository
+        │               │   │   ├── UsersRepository.java
+        │               │   │   └── UsersRepositoryJdbcTemplateImpl.java
+        │               │   └── utils
+        │               │       └── TableInitializer.java
+        │               ├── server
+        │               │   ├── ClientConnection.java
+        │               │   ├── Server.java
+        │               │   ├── commands
+        │               │   │   ├── LoginСommand.java
+        │               │   │   └── ManipulateRoomsCommand.java
+        │               │   ├── invokers
+        │               │   │   ├── LoginCommandSwitch.java
+        │               │   │   └── ManipulateRoomsCommandSwitch.java
+        │               │   └── receivers
+        │               │       ├── LoginReceiver.java
+        │               │       └── ManipulateRoomsReceiver.java
+        │               └── services
+        │                   ├── messageservice
+        │                   │   ├── MessagesService.java
+        │                   │   └── MessagesServiceImpl.java
+        │                   ├── roomservice
+        │                   │   ├── RoomsService.java
+        │                   │   └── RoomsServiceImpl.java
+        │                   └── userservice
+        │                       ├── UsersService.java
+        │                       └── UsersServiceImpl.java
+        └── resources
+            ├── data.sql
+            ├── db.properties
+            └── schema.sql
+
 ```
 
 </details>
+
 ### Структура клиента
 
+##### Компоненты клиента отвечают за взаимодействие с сервером и выполнение операций.
+- `Client` отвечает за установку соединения с сервером и запуск процессов чтения и записи данных. Класс создает сокет для подключения к серверу, инициализирует объекты `Reader` и `Writer` для обработки входящих и исходящих данных соответственно
+- `Reader` отвечает за чтение данных из сокета. Он запускается в отдельном потоке и непрерывно прослушивает входящий поток данных от сервера. `Reader` получает ответы от сервера и передает их в соответствующие компоненты для обработки.
+
+- `Writer` отвечает за запись данных в сокет. Он также работает в отдельном потоке и обрабатывает очередь исходящих сообщений. `Writer` получает команды от клиента и отправляет их на сервер для выполнения.
+
+<details>
+<summary>Нажмите, чтобы увидеть полную структуру клиента</summary>
+
+```
+├── pom.xml
+└── src
+    └── main
+        └── java
+            └── edu
+                └── school21
+                    └── sockets
+                        ├── app
+                        │   └── Main.java
+                        └── client
+                            ├── Client.java
+                            ├── Reader.java
+                            └── Writer.java 
+```
+
+</details>
 
 
 
