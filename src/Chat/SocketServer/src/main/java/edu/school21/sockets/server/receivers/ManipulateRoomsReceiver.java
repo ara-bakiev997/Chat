@@ -58,7 +58,6 @@ public class ManipulateRoomsReceiver {
         choose = choose.trim().toLowerCase();
         try {
           int id = Integer.parseInt(choose);
-          System.out.println("id = " + id);
           if (id == count + 1) {
             exit();
           } else if (id < 1) {

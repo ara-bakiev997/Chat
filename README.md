@@ -32,12 +32,12 @@
 ### Сборка сервера
 - Перейдите в папку `SocketServer`.
 - Выполните команду `mvn package` для сборки проекта.
-- После успешной сборки, в папке target появится файл socket-server-jar-with-dependencies.jar.
+- После успешной сборки, в папке target появится файл `socket-server-jar-with-dependencies.jar`.
 
 ### Сборка клиента
 - Перейдите в папку `SocketClient`.
 - Выполните команду `mvn package` для сборки проекта.
-- После успешной сборки, в папке target появится файл socket-client.jar.
+- После успешной сборки, в папке target появится файл `socket-client.jar`.
 
 # Запуск
 ### Запуск сервера

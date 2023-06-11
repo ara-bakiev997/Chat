@@ -87,7 +87,7 @@ public class ClientConnection implements Runnable {
       }
 
       if (!Thread.currentThread().isInterrupted()) {
-        System.out.println("Room selected " + room);
+        System.out.println("Room selected " + room.getName());
         sendLatestMessages();
         communicate();
       }
@@ -95,7 +95,9 @@ public class ClientConnection implements Runnable {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      disconnect();
+      if (!Thread.currentThread().isInterrupted()) {
+        disconnect();
+      }
     }
   }
 
@@ -103,7 +105,7 @@ public class ClientConnection implements Runnable {
     try {
       return reader.readLine();
     } catch (IOException e) {
-      return null; //TODO mb disconnect
+      return null; // TODO mb disconnect
     }
   }
 
@@ -135,7 +137,6 @@ public class ClientConnection implements Runnable {
 
   public void chooseRoom(Long id) {
     room = server.getRoomById(id).get();
-    System.out.println(room);
   }
 
   public void disconnect() {
