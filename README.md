@@ -36,7 +36,7 @@ https://github.com/ara-bakiev997/Chat/assets/106027588/39e160f9-06b0-4a8b-8acd-6
 ### Сборка клиента
 - Перейдите в папку `SocketClient`.
 - Выполните команду `mvn package` для сборки проекта.
-- После успешной сборки, в папке target появится файл `socket-client.jar`.
+- После успешной сборки, в папке target появится файл `socket-client-jar-with-dependencies.jar`.
 
 # Запуск
 ### Запуск сервера
@@ -44,7 +44,7 @@ https://github.com/ara-bakiev997/Chat/assets/106027588/39e160f9-06b0-4a8b-8acd-6
 - Выполните команду `java -jar target/socket-server-jar-with-dependencies.jar --port=8080` для запуска сервера.
 
 ### Запуск клиента
-- Выполните команду `java -jar target/socket-client.jar --server-port=8080` для запуска клиента.
+- Выполните команду `java -jar target/socket-client-jar-with-dependencies.jar --server-port=8080` для запуска клиента.
 
 # Структура проекта
 ### Структура сервера
@@ -73,60 +73,65 @@ https://github.com/ara-bakiev997/Chat/assets/106027588/39e160f9-06b0-4a8b-8acd-6
 <summary>Структура сервера</summary>
 
 ```yaml
+├── README.txt
 ├── docker-compose.yml
 ├── pom.xml
 └── src
     └── main
         ├── java
-        │   └── edu
-        │       └── school21
-        │           └── sockets
-        │               ├── app
-        │               │   └── Main.java
-        │               ├── config
-        │               │   └── SocketsApplicationConfig.java
-        │               ├── exceptions
-        │               │   ├── CommandNotFoundExceptions.java
-        │               │   └── RoomsNotFoundExceptions.java
-        │               ├── models
-        │               │   ├── ChatRoom.java
-        │               │   ├── Message.java
-        │               │   └── User.java
-        │               ├── repositories
-        │               │   ├── CrudRepository.java
-        │               │   ├── messagesrepository
-        │               │   │   ├── MessagesRepository.java
-        │               │   │   └── MessagesRepositoryJdbcTemplateImpl.java
-        │               │   ├── roomsrepository
-        │               │   │   ├── RoomsRepository.java
-        │               │   │   └── RoomsRepositoryJdbcTemplateImpl.java
-        │               │   ├── usersrepository
-        │               │   │   ├── UsersRepository.java
-        │               │   │   └── UsersRepositoryJdbcTemplateImpl.java
-        │               │   └── utils
-        │               │       └── TableInitializer.java
-        │               ├── server
-        │               │   ├── ClientConnection.java
-        │               │   ├── Server.java
-        │               │   ├── commands
-        │               │   │   ├── LoginСommand.java
-        │               │   │   └── ManipulateRoomsCommand.java
-        │               │   ├── invokers
-        │               │   │   ├── LoginCommandSwitch.java
-        │               │   │   └── ManipulateRoomsCommandSwitch.java
-        │               │   └── receivers
-        │               │       ├── LoginReceiver.java
-        │               │       └── ManipulateRoomsReceiver.java
-        │               └── services
-        │                   ├── messageservice
-        │                   │   ├── MessagesService.java
-        │                   │   └── MessagesServiceImpl.java
-        │                   ├── roomservice
-        │                   │   ├── RoomsService.java
-        │                   │   └── RoomsServiceImpl.java
-        │                   └── userservice
-        │                       ├── UsersService.java
-        │                       └── UsersServiceImpl.java
+        │   └── edu
+        │       └── school21
+        │           └── sockets
+        │               ├── app
+        │               │   └── Main.java
+        │               ├── config
+        │               │   └── SocketsApplicationConfig.java
+        │               ├── exceptions
+        │               │   ├── CommandNotFoundExceptions.java
+        │               │   └── RoomsNotFoundExceptions.java
+        │               ├── models
+        │               │   ├── ChatRoom.java
+        │               │   ├── JsonObject.java
+        │               │   ├── Message.java
+        │               │   └── User.java
+        │               ├── repositories
+        │               │   ├── CrudRepository.java
+        │               │   ├── messagesrepository
+        │               │   │   ├── MessagesRepository.java
+        │               │   │   └── MessagesRepositoryJdbcTemplateImpl.java
+        │               │   ├── roomsrepository
+        │               │   │   ├── RoomsRepository.java
+        │               │   │   └── RoomsRepositoryJdbcTemplateImpl.java
+        │               │   ├── usersrepository
+        │               │   │   ├── UsersRepository.java
+        │               │   │   └── UsersRepositoryJdbcTemplateImpl.java
+        │               │   └── utils
+        │               │       └── TableInitializer.java
+        │               ├── server
+        │               │   ├── ClientConnection.java
+        │               │   ├── Server.java
+        │               │   ├── commands
+        │               │   │   ├── LoginСommand.java
+        │               │   │   └── ManipulateRoomsCommand.java
+        │               │   ├── invokers
+        │               │   │   ├── LoginCommandSwitch.java
+        │               │   │   └── ManipulateRoomsCommandSwitch.java
+        │               │   └── receivers
+        │               │       ├── LoginReceiver.java
+        │               │       └── ManipulateRoomsReceiver.java
+        │               └── services
+        │                   ├── jsonservice
+        │                   │   ├── JsonService.java
+        │                   │   └── JsonServiceImpl.java
+        │                   ├── messageservice
+        │                   │   ├── MessagesService.java
+        │                   │   └── MessagesServiceImpl.java
+        │                   ├── roomservice
+        │                   │   ├── RoomsService.java
+        │                   │   └── RoomsServiceImpl.java
+        │                   └── userservice
+        │                       ├── UsersService.java
+        │                       └── UsersServiceImpl.java
         └── resources
             ├── data.sql
             ├── db.properties
@@ -155,11 +160,17 @@ https://github.com/ara-bakiev997/Chat/assets/106027588/39e160f9-06b0-4a8b-8acd-6
                 └── school21
                     └── sockets
                         ├── app
-                        │   └── Main.java
-                        └── client
-                            ├── Client.java
-                            ├── Reader.java
-                            └── Writer.java 
+                        │   └── Main.java
+                        ├── client
+                        │   ├── Client.java
+                        │   ├── Reader.java
+                        │   └── Writer.java
+                        ├── models
+                        │   └── JsonObject.java
+                        └── services
+                            └── jsonservice
+                                ├── JsonService.java
+                                └── JsonServiceImpl.java
 ```
 </details>
 
