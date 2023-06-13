@@ -10,6 +10,6 @@ public interface MessagesRepository {
   void save(Message message);
 
   void update(Message message);
-  
+
   List<Message> findAllMessagesInRoom(Long id);
 }

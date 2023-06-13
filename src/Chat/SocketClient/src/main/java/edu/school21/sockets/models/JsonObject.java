@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatRoom {
-  private Long id;
-  private String name;
-  private User creator;
+public class JsonObject {
+  private String message;
 }

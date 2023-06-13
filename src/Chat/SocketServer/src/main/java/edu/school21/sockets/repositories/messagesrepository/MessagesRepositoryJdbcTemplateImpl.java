@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
-import edu.school21.sockets.models.ChatRoom;
 import edu.school21.sockets.models.Message;
 import edu.school21.sockets.models.User;
 import edu.school21.sockets.repositories.usersrepository.UsersRepository;

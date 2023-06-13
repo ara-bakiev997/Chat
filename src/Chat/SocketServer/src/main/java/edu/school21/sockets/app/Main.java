@@ -3,7 +3,10 @@ package edu.school21.sockets.app;
 import java.io.IOException;
 import java.sql.SQLException;
 import org.springframework.beans.BeansException;
+import edu.school21.sockets.models.JsonObject;
 import edu.school21.sockets.server.Server;
+import edu.school21.sockets.services.jsonservice.JsonService;
+import edu.school21.sockets.services.jsonservice.JsonServiceImpl;
 
 public class Main {
   public static void main(String[] args) {
@@ -22,4 +25,3 @@ public class Main {
     }
   }
 }
-  

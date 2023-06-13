@@ -2,9 +2,13 @@ package edu.school21.sockets.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import edu.school21.sockets.models.JsonObject;
+import edu.school21.sockets.services.jsonservice.JsonService;
+import edu.school21.sockets.services.jsonservice.JsonServiceImpl;
 
 public class Reader implements Runnable {
   private final BufferedReader reader;
+  private final JsonService jsonService = new JsonServiceImpl();
 
   public Reader(BufferedReader reader) {
     this.reader = reader;
@@ -22,9 +26,11 @@ public class Reader implements Runnable {
           break;
         }
 
-        System.out.println(read);
+        JsonObject jsonObject = jsonService.parseJsonString(read);
 
-        if ("You have left the chat.".equalsIgnoreCase(read)) {
+        System.out.println(jsonObject.getMessage());
+
+        if ("You have left the chat.".equalsIgnoreCase(jsonObject.getMessage())) {
           disconnect();
           break;
         }

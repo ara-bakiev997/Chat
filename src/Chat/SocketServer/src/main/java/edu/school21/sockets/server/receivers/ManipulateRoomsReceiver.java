@@ -43,7 +43,9 @@ public class ManipulateRoomsReceiver {
 
     int id = chooseCommunicationRoom(allRooms.size(), response.toString());
 
-    connection.chooseRoom((long) id);
+    if (!Thread.currentThread().isInterrupted()) {
+      connection.chooseRoom((long) id);
+    }
   }
 
   public void exit() {

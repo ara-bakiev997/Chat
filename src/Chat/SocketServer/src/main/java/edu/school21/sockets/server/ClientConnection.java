@@ -8,31 +8,30 @@ import java.io.IOException;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import edu.school21.sockets.exceptions.CommandNotFoundExceptions;
 import edu.school21.sockets.exceptions.RoomsNotFoundExceptions;
 import edu.school21.sockets.models.ChatRoom;
+import edu.school21.sockets.models.JsonObject;
 import edu.school21.sockets.models.Message;
 import edu.school21.sockets.models.User;
 import edu.school21.sockets.server.receivers.LoginReceiver;
 import edu.school21.sockets.server.invokers.LoginCommandSwitch;
 import edu.school21.sockets.server.receivers.ManipulateRoomsReceiver;
+import edu.school21.sockets.services.jsonservice.JsonService;
+import edu.school21.sockets.services.jsonservice.JsonServiceImpl;
 import edu.school21.sockets.server.invokers.ManipulateRoomsCommandSwitch;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@EqualsAndHashCode
 @RequiredArgsConstructor
 public class ClientConnection implements Runnable {
-  @NonNull
-  private Socket clientSocket;
-
-  @Getter
-  @NonNull
-  private Server server;
+  private final Socket clientSocket;
+  private final Server server;
+  private final JsonService jsonService = new JsonServiceImpl();
 
   @Getter
   @Setter
@@ -63,7 +62,6 @@ public class ClientConnection implements Runnable {
     manipulateRoomsCommandSwitch.registerCommand("2", manipulateRoomsReceiver::chooseRoom);
     manipulateRoomsCommandSwitch.registerCommand("3", manipulateRoomsReceiver::exit);
   }
-
 
   @Override
   public void run() {
@@ -103,17 +101,20 @@ public class ClientConnection implements Runnable {
 
   public String readInputStream() {
     try {
-      return reader.readLine();
-    } catch (IOException e) {
-      return null; // TODO mb disconnect
+      JsonObject jsonObject = jsonService.parseJsonString(reader.readLine());
+      return jsonObject.getMessage();
+    } catch (Exception e) {
+      return null;
     }
   }
 
   public void writeOutputStream(String message) {
     try {
-      writer.write(message + "\n");
+      JsonObject jsonObject = new JsonObject(message);
+      String jsonString = jsonService.createJsonString(jsonObject);
+      writer.write(jsonString + "\n");
       writer.flush();
-    } catch (IOException e) {
+    } catch (Exception e) {
       disconnect();
     }
   }
@@ -234,7 +235,6 @@ public class ClientConnection implements Runnable {
     writeOutputStream(latestMessagesFromRoom.toString());
   }
 
-
   private void communicate() {
     String response = "Start messaging";
     writeOutputStream(response);
@@ -256,5 +256,28 @@ public class ClientConnection implements Runnable {
     }
   }
 
-}
+  @Override
+  public int hashCode() {
+    return Objects.hash(clientSocket, jsonService, loginCommandSwitch, loginReceiver,
+        manipulateRoomsCommandSwitch, manipulateRoomsReceiver, server);
+  }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    ClientConnection other = (ClientConnection) obj;
+    return Objects.equals(clientSocket, other.clientSocket)
+        && Objects.equals(jsonService, other.jsonService)
+        && Objects.equals(loginCommandSwitch, other.loginCommandSwitch)
+        && Objects.equals(loginReceiver, other.loginReceiver)
+        && Objects.equals(manipulateRoomsCommandSwitch, other.manipulateRoomsCommandSwitch)
+        && Objects.equals(manipulateRoomsReceiver, other.manipulateRoomsReceiver)
+        && Objects.equals(server, other.server);
+  }
+
+}

@@ -29,8 +29,6 @@ public class Server implements AutoCloseable {
   private RoomsService roomsService;
   private ServerSocket serverSocket;
   private Set<ClientConnection> allConnections = new LinkedHashSet<>();
-  private Set<ChatRoom> allChatRoom = new LinkedHashSet<>();
-
 
   public Server(int port) throws IOException, BeansException, SQLException {
     serverSocket = new ServerSocket(port);
@@ -75,7 +73,6 @@ public class Server implements AutoCloseable {
 
   public synchronized void createRoom(ChatRoom room) {
     roomsService.saveRoom(room);
-    allChatRoom.add(room);
   }
 
   public synchronized List<ChatRoom> getAllRooms() {
